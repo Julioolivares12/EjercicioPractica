@@ -1,5 +1,6 @@
 package com.example.ejercicioprac.Datos;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -26,5 +27,26 @@ public class Crud {
             usuario.setTipo(cursor.getString(3));
         }
         return usuario;
+    }
+
+    public static void actualizar(SQLiteDatabase database,Usuario usuario){
+        String q = "";
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("correos",usuario.getCorreo());
+        contentValues.put("nombres",usuario.getNombre());
+        contentValues.put("claves",usuario.getPass());
+        contentValues.put("tipo",usuario.getTipo());
+        String[] args = new String[]{usuario.getCorreo()};
+        database.update("usuarios",contentValues,"correos=?",args);
+    }
+
+    public static boolean comprobarCorreo(SQLiteDatabase database,String correo){
+        boolean existe = false;
+        String q = "select correos from usuarios where correos = '"+correo+"'";
+        Cursor cursor = database.rawQuery(q,null);
+        if (cursor.moveToFirst()){
+            existe = true;
+        }
+        return existe;
     }
 }
