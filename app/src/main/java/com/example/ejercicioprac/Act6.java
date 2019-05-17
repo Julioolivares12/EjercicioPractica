@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import com.example.ejercicioprac.Datos.Conexion;
 import com.example.ejercicioprac.Datos.ConexionSQLite;
+import com.example.ejercicioprac.Datos.Crud;
+import com.example.ejercicioprac.Datos.Usuario;
 
 import backend.Usuarios;
 
@@ -69,23 +71,29 @@ public class Act6 extends AppCompatActivity {
                 sinError=true;
 
             if(!sinError){
-                String miBusqueda = "select * from usuarios where correos == '"+edtCorreo+"'";
+                Usuario usu = Crud.buscarPorCorreo(base,correo);
+                obj.putExtra("pCorreo", usu.getCorreo());
+                obj.putExtra("pNombres",usu.getNombre());
+                obj.putExtra("pClave", usu.getPass());
+                obj.putExtra("pTipo", usu.getTipo());
+                obj.putExtra("pAccion", accion);
+                startActivityForResult(obj,4);
+                /*
+                * String miBusqueda = "select * from usuarios where correos == '"+edtCorreo+"'";
                Cursor cursor= base.rawQuery(miBusqueda,null);
                if (cursor.moveToFirst()){
                    String correo = cursor.getString(0);
                    String nombre = cursor.getString(1);
-                   String clave = cursor.getString(3);
-                   String tipo = cursor.getString(4);
+                   String clave = cursor.getString(2);
+                   String tipo = cursor.getString(3);
 
-                   obj.putExtra("pCorreo", correo);
-                   obj.putExtra("pNombres",nombre);
-                   obj.putExtra("pClave", clave);
-                   obj.putExtra("pTipo", tipo);
-                   obj.putExtra("pAccion", accion);
-                   startActivityForResult(obj,4);
+
                }else {
                    Toast.makeText(getApplicationContext(), "no se encontro el correo", Toast.LENGTH_SHORT).show();
                }
+                *
+                *
+                * */
                 //int index = backendList.getIndiceCorreo(correo);
                 /*if(index > -1){
                     obj.putExtra("pCorreo", correo);

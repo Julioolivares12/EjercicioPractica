@@ -59,7 +59,7 @@ public class Act4 extends AppCompatActivity {
 
         }else if(accion.equals("eliminar")){
             Crud.eliminar(base,"usuarios","correos",correo);
-            
+
             Toast.makeText(getApplicationContext(), "Datos eliminados correctamente", Toast.LENGTH_LONG).show();
             setResult(RESULT_CANCELED, objRetorno);
             finish();
