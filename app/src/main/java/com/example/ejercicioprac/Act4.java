@@ -1,12 +1,17 @@
 package com.example.ejercicioprac;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.ejercicioprac.Datos.Conexion;
+import com.example.ejercicioprac.Datos.ConexionSQLite;
+import com.example.ejercicioprac.Datos.Crud;
 
 import backend.Usuarios;
 
@@ -17,6 +22,8 @@ public class Act4 extends AppCompatActivity {
     Button btnAccion, btnCancel;
     Intent objRetorno = new Intent();
     Usuarios backendList;
+    ConexionSQLite conexionSQLite ;
+    SQLiteDatabase base ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +31,8 @@ public class Act4 extends AppCompatActivity {
         backendList = Usuarios.getInstance();
         Bundle datos = getIntent().getExtras();
 
+        conexionSQLite = Conexion.getConexion(getApplicationContext());
+        base = conexionSQLite.getWritableDatabase();
         tvNombre = findViewById(R.id.tvNombre);
         tvCorreo = findViewById(R.id.tvCorreo);
         tvClave = findViewById(R.id.tvClave);
@@ -49,11 +58,8 @@ public class Act4 extends AppCompatActivity {
             finish();
 
         }else if(accion.equals("eliminar")){
-            int index = backendList.getIndiceCorreo(correo);
-            backendList.removeCorreo(index);
-            backendList.removeClave(index);
-            backendList.removeNivel(index);
-            backendList.removeNombres(index);
+            Crud.eliminar(base,"usuarios","correos",correo);
+            
             Toast.makeText(getApplicationContext(), "Datos eliminados correctamente", Toast.LENGTH_LONG).show();
             setResult(RESULT_CANCELED, objRetorno);
             finish();

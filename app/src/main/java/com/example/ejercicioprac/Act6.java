@@ -1,6 +1,7 @@
 package com.example.ejercicioprac;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,6 +34,7 @@ public class Act6 extends AppCompatActivity {
         edtCorreo = findViewById(R.id.edtCorreo6);
 
         conexionSQLite = Conexion.getConexion(getApplicationContext());
+        base = conexionSQLite.getWritableDatabase();
 
     }
 
@@ -68,8 +70,22 @@ public class Act6 extends AppCompatActivity {
 
             if(!sinError){
                 String miBusqueda = "select * from usuarios where correos == '"+edtCorreo+"'";
+               Cursor cursor= base.rawQuery(miBusqueda,null);
+               if (cursor.moveToFirst()){
+                   String correo = cursor.getString(0);
+                   String nombre = cursor.getString(1);
+                   String clave = cursor.getString(3);
+                   String tipo = cursor.getString(4);
 
-
+                   obj.putExtra("pCorreo", correo);
+                   obj.putExtra("pNombres",nombre);
+                   obj.putExtra("pClave", clave);
+                   obj.putExtra("pTipo", tipo);
+                   obj.putExtra("pAccion", accion);
+                   startActivityForResult(obj,4);
+               }else {
+                   Toast.makeText(getApplicationContext(), "no se encontro el correo", Toast.LENGTH_SHORT).show();
+               }
                 //int index = backendList.getIndiceCorreo(correo);
                 /*if(index > -1){
                     obj.putExtra("pCorreo", correo);
@@ -78,8 +94,8 @@ public class Act6 extends AppCompatActivity {
                     obj.putExtra("pTipo", backendList.getNivel(index));
                     obj.putExtra("pAccion", accion);
                     startActivityForResult(obj,4);*/
-                obj.putExtra("pCorreo",edtCorreo.getText().toString().trim());
-                startActivityForResult(obj,4);
+                //obj.putExtra("pCorreo",edtCorreo.getText().toString().trim());
+                //startActivityForResult(obj,4);
 
                 }else{
                     Toast.makeText(getApplicationContext(), "No se encontro informacion del usuario", Toast.LENGTH_SHORT).show();
