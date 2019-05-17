@@ -1,0 +1,22 @@
+package com.example.ejercicioprac.Datos;
+
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+public class ConexionSQLite extends SQLiteOpenHelper {
+    public ConexionSQLite(Context context, String name,  SQLiteDatabase.CursorFactory factory, int version) {
+        super(context, name, factory, version);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        String consultaSql = "create table usuarios(correos text primary key, nombres text, claves text, tipo text)";
+        db.execSQL(consultaSql);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+}
