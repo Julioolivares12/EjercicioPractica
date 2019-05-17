@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void login(String correo , String pass){
-        String misql="correos,claves , tipo from usuariosBD where correos == '"+correo+"' and claves == '"+pass+"'";
+        String misql="select correos,claves , tipo from usuarios where correos == '"+correo+"' and claves == '"+pass+"'";
 
      base.execSQL(misql);
      Cursor cursor = base.rawQuery(misql,null);
