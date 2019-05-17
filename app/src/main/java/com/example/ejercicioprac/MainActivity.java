@@ -24,8 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
     String usuario = "", pass="";
 
-    ConexionSQLite conexionSQLite = Conexion.getConexion(getApplicationContext());
-    SQLiteDatabase base = conexionSQLite.getWritableDatabase();
+    ConexionSQLite conexionSQLite ;
+    SQLiteDatabase base ;
     public static final int MAINACTVITY_REQUEST = 1;
 
     @Override
@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
 
         edtUsuario = findViewById(R.id.edtUsuario);
         edtPass = findViewById(R.id.edtClave);
+        conexionSQLite= Conexion.getConexion(getApplicationContext());
+        base = conexionSQLite.getWritableDatabase();
     }
 
     public void ingresar(View v)
@@ -53,17 +55,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
 
-            if(usuario.equals("utec") && pass.equals("1234")){
-                Intent obj;
-                obj = new Intent(getApplicationContext(),Act2.class);
-                Toast.makeText(getApplicationContext(), "Bienvenido: " + usuario , Toast.LENGTH_LONG).show();
-                startActivityForResult(obj,1);
-                Usuarios.getInstance();
-
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "Credenciales incorrectas", Toast.LENGTH_LONG).show();
-            }
+            login(edtUsuario.getText().toString(),edtPass.getText().toString());
 
         }
     }
@@ -85,6 +77,9 @@ public class MainActivity extends AppCompatActivity {
             else{
                 Toast.makeText(getApplicationContext(),"usuairo incorrecto", Toast.LENGTH_SHORT).show();
             }
+        }else {
+
+            Toast.makeText(getApplicationContext(),"correo o contraseña incorrectos",Toast.LENGTH_SHORT).show();
         }
         
     }
